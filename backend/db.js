@@ -1,11 +1,17 @@
 const mongoose = require("mongoose");
-const mongoURI = "mongodb://127.0.0.1:27017/inotebook2";
 
-const connectToMongo = () => {
-    mongoose.set("strictQuery", false);
-    mongoose.connect(mongoURI, ()=>{
-        console.log("Connected to Mongo Succesfully.");
-    })
-}
+// MongoDB connection URI from environment variable
+const mongoURI = process.env.MONGODB_URI;
+
+const connectToMongo = async () => {
+    try {
+        mongoose.set("strictQuery", false);
+        await mongoose.connect(mongoURI);
+        console.log("Connected to MongoDB Successfully");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error.message);
+        process.exit(1);
+    }
+};
 
 module.exports = connectToMongo;
